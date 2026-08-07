@@ -55,16 +55,28 @@
   </div>
 
   <script>
-    // O Flutter registra o service worker sozinho. O que ele NÃO faz é
-    // avisar quando uma versão nova assume — sem isto o usuário fica preso
-    // na versão em cache até fechar tudo e abrir de novo, que é exatamente
-    // o problema que o app instalável deveria resolver.
     if ('serviceWorker' in navigator) {
+      // Quando uma versão nova assume o controle, recarrega sozinho. Sem
+      // isto o usuário ficaria na versão antiga até fechar tudo e abrir
+      // de novo — o oposto de "atualiza direto".
+      // Só recarrega se JÁ havia um controlador: na primeira visita o
+      // claim() do sw.js dispara este evento e recarregar seria à toa.
+      const tinhaControlador = !!navigator.serviceWorker.controller;
       let recarregando = false;
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (recarregando) return;
+        if (!tinhaControlador || recarregando) return;
         recarregando = true;
         location.reload();
+      });
+
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then((reg) => {
+          // Procura atualização toda vez que o app volta pra frente,
+          // que no celular é o que acontece o dia inteiro.
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') reg.update();
+          });
+        }).catch((e) => console.warn('service worker:', e));
       });
     }
 
