@@ -12,7 +12,7 @@
 //   motor gráfico e fontes     → cache primeiro, revalidando em segundo plano
 //   Supabase e qualquer API    → nunca passa por aqui
 
-const CACHE = 'kaia-lucro-v1';
+const CACHE = 'kaia-lucro-v2';
 
 // Casa com main.dart.js, flutter_bootstrap.js, flutter.js, manifest.json
 // e o próprio index — tudo que muda a cada publicação.
@@ -38,7 +38,18 @@ self.addEventListener('activate', (e) => {
 async function redePrimeiro(req) {
   const cache = await caches.open(CACHE);
   try {
-    const resp = await fetch(req);
+    // 'no-cache' obriga a revalidar com o servidor (manda o ETag e aceita
+    // 304). Sem isto o Cache-Control de 10 minutos do GitHub Pages faria o
+    // navegador devolver o código antigo de dentro do cache HTTP, e a
+    // "rede primeiro" seria mentira: o index viria novo e o main.dart.js
+    // velho — versões misturadas, pior que não atualizar.
+    //
+    // A Request é montada da URL em vez de reaproveitar a original porque
+    // pedido de navegação tem mode 'navigate', que o construtor recusa.
+    const resp = await fetch(new Request(req.url, {
+      cache: 'no-cache',
+      credentials: 'same-origin',
+    }));
     if (resp && resp.ok) cache.put(req, resp.clone());
     return resp;
   } catch (_) {

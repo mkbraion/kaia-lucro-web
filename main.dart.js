@@ -104254,7 +104254,7 @@ m=A.fU(($.v?B.P:B.N).dq(0.35),1)
 l=$.v
 k=A.c2(B.WV,l?B.P:B.N,j,18)
 n=A.fC(A.bC(j,A.b_(A.c([k,B.dT,A.X("Sair da conta",j,j,j,A.e7(14,l?B.P:B.N,B.G),j,j,j)],q),B.o,B.j,B.m,0,j),B.r,j,j,new A.bM(j,j,m,n,j,j,B.V),j,j,j,j,B.kr,j,j,j),new A.av3(a))
-return A.hj(g,A.js(A.c([new A.f1(f,0,j),B.c2,B.aBh,new A.JP(r,j),B.cm,B.aBb,new A.JP(p,j),B.cm,B.aB9,o,B.cm,n,B.cm,A.ee(A.X("KAIA LUCRO \xb7 1.1.0 \xb7 07/08/2026",j,j,j,A.bf(j,j,$.v?B.B:B.C,j,j,j,j,j,"Archivo",j,j,10.5,j,j,B.G,j,j,!0,j,0.9,j,j,j,j,j,j),j,j,j),j,j)],q),B.vc,B.ac),j,j,j)},
+return A.hj(g,A.js(A.c([new A.f1(f,0,j),B.c2,B.aBh,new A.JP(r,j),B.cm,B.aBb,new A.JP(p,j),B.cm,B.aB9,o,B.cm,n,B.cm,A.ee(A.X("KAIA LUCRO \xb7 1.1.1 \xb7 07/08/2026",j,j,j,A.bf(j,j,$.v?B.B:B.C,j,j,j,j,j,"Archivo",j,j,10.5,j,j,B.G,j,j,!0,j,0.9,j,j,j,j,j,j),j,j,j),j,j)],q),B.vc,B.ac),j,j,j)},
 $S:49}
 A.av1.prototype={
 $0(){var s=A.h1(new A.av0(),null,t.z)
