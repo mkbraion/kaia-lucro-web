@@ -69,15 +69,16 @@
         location.reload();
       });
 
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').then((reg) => {
-          // Procura atualização toda vez que o app volta pra frente,
-          // que no celular é o que acontece o dia inteiro.
-          document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') reg.update();
-          });
-        }).catch((e) => console.warn('service worker:', e));
-      });
+      // Registra já, sem esperar o evento 'load': num app Flutter o 'load'
+      // só dispara depois do motor gráfico inteiro baixar, e até lá a
+      // primeira visita ficaria sem service worker nenhum.
+      navigator.serviceWorker.register('sw.js').then((reg) => {
+        // Procura atualização toda vez que o app volta pra frente, que no
+        // celular é o que acontece o dia inteiro.
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update();
+        });
+      }).catch((e) => console.warn('service worker:', e));
     }
 
     window.addEventListener('flutter-first-frame', () => {
