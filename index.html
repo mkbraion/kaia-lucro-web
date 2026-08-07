@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <base href="/kaia-lucro-web/">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="description" content="Gestão para revendedor: lucro real por venda, estoque, fiado e caixa.">
+  <meta name="theme-color" content="#F7F5F0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14130F" media="(prefers-color-scheme: dark)">
+
+  <!-- Instalação na tela de início do iPhone -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="KAIA Lucro">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <title>KAIA Lucro</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #F7F5F0; overscroll-behavior: none; }
+    @media (prefers-color-scheme: dark) { html, body { background: #14130F; } }
+
+    /* Tela de abertura enquanto o Flutter carrega. Sem isso a primeira
+       visita mostra um retângulo branco por alguns segundos. */
+    #abertura {
+      position: fixed; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 18px;
+      font-family: Georgia, 'Noto Serif', serif; color: #1A1815;
+      transition: opacity .25s ease;
+    }
+    @media (prefers-color-scheme: dark) { #abertura { color: #F2EFE8; } }
+    #abertura .marca {
+      width: 56px; height: 56px; border-radius: 13px; background: #1A1815;
+      color: #F7F5F0; display: grid; place-items: center;
+      font-size: 21px; font-weight: 800; letter-spacing: -.5px;
+    }
+    @media (prefers-color-scheme: dark) {
+      #abertura .marca { background: #F2EFE8; color: #14130F; }
+    }
+    #abertura .nome { font-size: 17px; font-weight: 800; letter-spacing: -.4px; }
+    #abertura .nota {
+      font-family: system-ui, sans-serif; font-size: 12px; opacity: .55; font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div id="abertura">
+    <div class="marca">KL</div>
+    <div class="nome">KAIA Lucro</div>
+    <div class="nota">Abrindo o caixa</div>
+  </div>
+
+  <script>
+    // O Flutter registra o service worker sozinho. O que ele NÃO faz é
+    // avisar quando uma versão nova assume — sem isto o usuário fica preso
+    // na versão em cache até fechar tudo e abrir de novo, que é exatamente
+    // o problema que o app instalável deveria resolver.
+    if ('serviceWorker' in navigator) {
+      let recarregando = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (recarregando) return;
+        recarregando = true;
+        location.reload();
+      });
+    }
+
+    window.addEventListener('flutter-first-frame', () => {
+      const a = document.getElementById('abertura');
+      if (!a) return;
+      a.style.opacity = '0';
+      setTimeout(() => a.remove(), 260);
+    });
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
